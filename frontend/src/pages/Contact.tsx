@@ -36,7 +36,7 @@ const Contact: React.FC = () => {
 
   const contactInfo = [
     { icon: '', label: 'Email', value: 'rijaarshadr@gmail.com', href: 'mailto:rijaarshadr@gmail.com' },
-    { icon: '', label: 'WhatsApp', value: '+92 300 1234567', href: 'https://wa.me/923001234567' },
+    { icon: '', label: 'WhatsApp', value: '+92 3012214740', href: 'https://wa.me/923012214740' },
     { icon: '', label: 'Instagram', value: 'rija4_45', href: 'https://instagram.com/rija4_45' },
     { icon: '📍', label: 'Location', value: 'Pakistan 🇵🇰', href: undefined },
   ];
