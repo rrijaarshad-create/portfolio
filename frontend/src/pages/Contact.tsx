@@ -59,8 +59,7 @@ const Contact: React.FC = () => {
             My inbox is always open — I'll get back within 24 hours.
           </motion.p>
 
-          <div style={{
-            display: 'grid', gridTemplateColumns: '1fr 1.5fr',
+         <div className="responsive-2col-wide" style={{
             gap: '4rem', alignItems: 'start',
           }}>
             {/* Left: contact info */}
@@ -77,11 +76,11 @@ const Contact: React.FC = () => {
                       background: 'var(--bg-card)', border: '1px solid var(--border)',
                       borderRadius: 8, transition: 'all 0.3s',
                     }}
-                    whileHover={{ borderColor: 'rgba(251,191,36,0.35)', x: 4 }}
+                   whileHover={{ borderColor: 'rgba(101,82,208,0.35)', x: 4 }}
                   >
                     <div style={{
                       width: 42, height: 42, borderRadius: 8,
-                      background: 'rgba(245,158,11,0.1)',
+                      background: 'rgba(101,82,208,0.1)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: '1.2rem', flexShrink: 0,
                     }}>{info.icon}</div>
@@ -132,7 +131,7 @@ const Contact: React.FC = () => {
                   color: 'var(--amber-200)', marginBottom: '1.75rem', fontWeight: 700,
                 }}>Send me a message</h2>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                <div className="responsive-form-2col" style={{ gap: '1rem', marginBottom: '1rem' }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.78rem', color: 'var(--amber-600)', marginBottom: '0.4rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.05em' }}>
                       Name *

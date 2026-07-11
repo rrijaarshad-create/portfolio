@@ -99,8 +99,8 @@ const ProjectCard: React.FC<{ project: Project; index: number; inView: boolean }
             position: 'absolute',
             top: 10,
             right: 10,
-            background: 'gold',
-            color: '#000',
+            background: 'var(--primary)',
+            color: '#fff',
             padding: '4px 10px',
             borderRadius: 20,
             fontSize: 10,
@@ -247,9 +247,10 @@ const Projects: React.FC = () => {
             style={{
               marginRight: 10,
               padding: '8px 15px',
-              background: filter === f ? 'gold' : '#222',
-              color: filter === f ? '#000' : '#fff',
-              border: 'none',
+              background: filter === f ? 'var(--primary)' : 'var(--bg-card)',
+              color: filter === f ? '#fff' : 'var(--text-secondary)',
+              border: filter === f ? 'none' : '1px solid var(--border)',
+              borderRadius: 6,
               cursor: 'pointer',
             }}
           >
@@ -259,11 +260,12 @@ const Projects: React.FC = () => {
       </div>
 
       {/* GRID — 3 columns with generous gap */}
+    {/* GRID — auto-adjusts columns to fit screen width (3 on desktop, fewer on tablet/mobile) */}
       <div
         ref={ref}
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
           gap: '32px 28px',
           maxWidth: '1100px',
           margin: '0 auto',

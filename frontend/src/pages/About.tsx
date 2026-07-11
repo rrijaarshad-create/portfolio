@@ -52,8 +52,7 @@ const About: React.FC = () => {
       {/* Hero */}
       <section className="section">
         <div className="container">
-          <div style={{
-            display: 'grid', gridTemplateColumns: '1fr 1fr',
+          <div className="responsive-2col" style={{
             gap: '5rem', alignItems: 'center',
           }}>
             <div>
@@ -86,9 +85,9 @@ const About: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               style={{ display: 'flex', justifyContent: 'center' }}
             >
-              <div style={{
-                width: 340, height: 380,
-                background: 'linear-gradient(135deg, var(--bg-card) 0%, rgba(245,158,11,0.1) 100%)',
+<div style={{
+                width: '100%', maxWidth: 340, aspectRatio: '340 / 380',
+                background: 'linear-gradient(135deg, var(--bg-card) 0%, rgba(101,82,208,0.1) 100%)',
                 border: '1px solid var(--border-hover)',
                 borderRadius: 16, position: 'relative',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -99,8 +98,8 @@ const About: React.FC = () => {
   src="/myPhoto.png"
   alt="Profile"
   style={{
-    width: 340,
-    height: 380,
+    width: '100%',
+    height: '100%',
     objectFit: 'cover',
     borderRadius: 16,
   }}
@@ -117,7 +116,7 @@ const About: React.FC = () => {
       </section>
 
       {/* Education Timeline */}
-      <section className="section" ref={ref} style={{ background: 'rgba(245,158,11,0.02)' }}>
+ <section className="section" ref={ref} style={{ background: 'rgba(101,82,208,0.02)' }}>
         <div className="container">
           <motion.p className="section-label" initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}>
             Academic Background

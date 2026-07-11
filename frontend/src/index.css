@@ -310,3 +310,46 @@ button {
     font-size: 2.25rem;
   }
 }
+/* Responsive two-column layouts (About hero, Contact) — stack on mobile
+   instead of squishing into unreadable narrow columns */
+.responsive-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.responsive-2col-wide {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+}
+
+.responsive-form-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 768px) {
+  .responsive-2col,
+  .responsive-2col-wide {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-form-2col {
+    grid-template-columns: 1fr !important;
+  }
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .section {
+    padding: 4rem 0;
+  }
+
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  .section-title {
+    font-size: 2.25rem;
+  }
+}

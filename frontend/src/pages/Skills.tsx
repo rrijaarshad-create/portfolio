@@ -65,7 +65,7 @@ const SkillBar: React.FC<{ name: string; level: number; delay: number; inView: b
       <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--amber-500)' }}>{level}%</span>
     </div>
     <div style={{
-      height: 6, background: 'rgba(245,158,11,0.1)',
+      height: 6, background: 'rgba(101,82,208,0.1)',
       borderRadius: 100, overflow: 'hidden',
     }}>
       <motion.div
@@ -76,9 +76,9 @@ const SkillBar: React.FC<{ name: string; level: number; delay: number; inView: b
           height: '100%',
           background: `linear-gradient(90deg, var(--amber-600), var(--amber-400))`,
           borderRadius: 100,
-          boxShadow: '0 0 8px rgba(245,158,11,0.4)',
+          boxShadow: '0 0 8px rgba(101,82,208,0.4)',
         }}
-      />
+      />s
     </div>
   </div>
 );
@@ -139,7 +139,7 @@ const Skills: React.FC = () => {
       </section>
 
       {/* Tech icon cloud */}
-      <section className="section" ref={refIcons} style={{ background: 'rgba(245,158,11,0.02)' }}>
+     <section className="section" ref={refIcons} style={{ background: 'rgba(101,82,208,0.02)' }}>
         <div className="container" style={{ textAlign: 'center' }}>
           <motion.p className="section-label"
             style={{ justifyContent: 'center', display: 'flex' }}
