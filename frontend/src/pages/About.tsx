@@ -86,7 +86,7 @@ const About: React.FC = () => {
               style={{ display: 'flex', justifyContent: 'center' }}
             >
 <div style={{
-                width: '100%', maxWidth: 340, aspectRatio: '340 / 380',
+                width: '100%', maxWidth: 340, height: '500',
                 background: 'linear-gradient(135deg, var(--bg-card) 0%, rgba(101,82,208,0.1) 100%)',
                 border: '1px solid var(--border-hover)',
                 borderRadius: 16, position: 'relative',
@@ -96,12 +96,12 @@ const About: React.FC = () => {
                 {/* Replace this div with your <img src="photo.jpg" /> */}
                 <img
   src="/myPhoto.png"
-  alt="Profile"
+  alt="Rija Arshad"
   style={{
     width: '100%',
     height: '100%',
-    objectFit: 'cover',
-    borderRadius: 16,
+    objectFit: 'contain',
+    objectPosition: 'center bottom',
   }}
 />
                 {/* Corner accents */}
@@ -116,7 +116,7 @@ const About: React.FC = () => {
       </section>
 
       {/* Education Timeline */}
- <section className="section" ref={ref} style={{ background: 'rgba(101,82,208,0.02)' }}>
+      <section className="section" ref={ref} style={{ background: 'rgba(245,158,11,0.02)' }}>
         <div className="container">
           <motion.p className="section-label" initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}>
             Academic Background
