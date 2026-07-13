@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
+const fs = require('fs');
 const connectDB = require('./config/db');
 
 // Connect to MongoDB
@@ -51,11 +52,19 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
-// ─── Serve React Frontend (for production) ────────────────────
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/build')));
+// ─── Serve React Frontend (only if built into this same deployment) ───
+// If you deploy frontend and backend separately (e.g. frontend on Vercel,
+// backend on Railway), the build folder won't exist here — skip cleanly
+// instead of crashing on every non-API request.
+const frontendBuildPath = path.join(__dirname, '../frontend/build');
+if (process.env.NODE_ENV === 'production' && fs.existsSync(path.join(frontendBuildPath, 'index.html'))) {
+  app.use(express.static(frontendBuildPath));
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+    res.sendFile(path.join(frontendBuildPath, 'index.html'));
+  });
+} else {
+  app.get('/', (req, res) => {
+    res.json({ message: 'Portfolio API is running.' });
   });
 }
 

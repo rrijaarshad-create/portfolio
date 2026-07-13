@@ -25,53 +25,62 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ message: 'Please provide a valid email address.' });
     }
 
-    // Save to DB
+    // Save to DB — this is the source of truth. Even if email fails below,
+    // the message is safely stored and you can see it via GET /api/contact
     const contact = new Contact({ name, email, subject, message });
     await contact.save();
 
-    // Send email notification to you
+    // Send email notification — best effort. If this fails (bad Gmail
+    // credentials, etc.) we still tell the user their message was received,
+    // since it's already saved in the database.
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-      const transporter = createTransporter();
-      await transporter.sendMail({
-        from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
-        to: process.env.EMAIL_TO || process.env.EMAIL_USER,
-        subject: `📬 New message from ${name}: ${subject || 'Portfolio Contact'}`,
-        html: `
-          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #1a1208; color: #fef3c7; border-radius: 8px;">
-            <h2 style="color: #f59e0b; margin-bottom: 16px;">New Portfolio Message</h2>
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr><td style="padding: 8px 0; color: #92400e; width: 100px;">From</td><td style="color: #fef3c7;">${name}</td></tr>
-              <tr><td style="padding: 8px 0; color: #92400e;">Email</td><td style="color: #fef3c7;">${email}</td></tr>
-              <tr><td style="padding: 8px 0; color: #92400e;">Subject</td><td style="color: #fef3c7;">${subject || 'Not specified'}</td></tr>
-            </table>
-            <hr style="border-color: rgba(251,191,36,0.2); margin: 16px 0;" />
-            <p style="color: #92400e; margin-bottom: 8px;">Message:</p>
-            <p style="background: rgba(245,158,11,0.05); padding: 16px; border-radius: 6px; border-left: 3px solid #f59e0b; color: #fef3c7; line-height: 1.7;">
-              ${message.replace(/\n/g, '<br/>')}
-            </p>
-            <p style="color: #92400e; font-size: 12px; margin-top: 24px;">Received via your portfolio contact form</p>
-          </div>
-        `,
-      });
+      try {
+        const transporter = createTransporter();
+        await transporter.sendMail({
+          from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
+          to: process.env.EMAIL_TO || process.env.EMAIL_USER,
+          subject: `📬 New message from ${name}: ${subject || 'Portfolio Contact'}`,
+          html: `
+            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #f9f9fb; color: #17203D; border-radius: 8px;">
+              <h2 style="color: #6552D0; margin-bottom: 16px;">New Portfolio Message</h2>
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr><td style="padding: 8px 0; color: #6b7280; width: 100px;">From</td><td style="color: #17203D;">${name}</td></tr>
+                <tr><td style="padding: 8px 0; color: #6b7280;">Email</td><td style="color: #17203D;">${email}</td></tr>
+                <tr><td style="padding: 8px 0; color: #6b7280;">Subject</td><td style="color: #17203D;">${subject || 'Not specified'}</td></tr>
+              </table>
+              <hr style="border-color: rgba(101,82,208,0.2); margin: 16px 0;" />
+              <p style="color: #6b7280; margin-bottom: 8px;">Message:</p>
+              <p style="background: rgba(101,82,208,0.05); padding: 16px; border-radius: 6px; border-left: 3px solid #6552D0; color: #17203D; line-height: 1.7;">
+                ${message.replace(/\n/g, '<br/>')}
+              </p>
+              <p style="color: #6b7280; font-size: 12px; margin-top: 24px;">Received via your portfolio contact form</p>
+            </div>
+          `,
+        });
 
-      // Auto-reply to sender
-      await transporter.sendMail({
-        from: `"Your Name" <${process.env.EMAIL_USER}>`,
-        to: email,
-        subject: `Thanks for reaching out, ${name}! 🙌`,
-        html: `
-          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px;">
-            <h2 style="color: #f59e0b;">Hey ${name}!</h2>
-            <p>Thanks for your message. I've received it and will get back to you within 24 hours.</p>
-            <p>Here's a copy of what you sent:</p>
-            <blockquote style="border-left: 3px solid #f59e0b; padding-left: 16px; color: #666;">
-              ${message.replace(/\n/g, '<br/>')}
-            </blockquote>
-            <p>Talk soon! 🚀</p>
-            <p><strong>YourName</strong><br/>Full-Stack Developer</p>
-          </div>
-        `,
-      });
+        // Auto-reply to sender
+        await transporter.sendMail({
+          from: `"Rija Arshad" <${process.env.EMAIL_USER}>`,
+          to: email,
+          subject: `Thanks for reaching out, ${name}! 🙌`,
+          html: `
+            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px;">
+              <h2 style="color: #6552D0;">Hey ${name}!</h2>
+              <p>Thanks for your message. I've received it and will get back to you within 24 hours.</p>
+              <p>Here's a copy of what you sent:</p>
+              <blockquote style="border-left: 3px solid #6552D0; padding-left: 16px; color: #666;">
+                ${message.replace(/\n/g, '<br/>')}
+              </blockquote>
+              <p>Talk soon! 🚀</p>
+              <p><strong>Rija Arshad</strong><br/>Full-Stack Developer</p>
+            </div>
+          `,
+        });
+      } catch (emailErr) {
+        // Don't fail the whole request over email — the message is already
+        // safely in the database. Just log it so you know email needs a look.
+        console.error('Email send failed (message was still saved to DB):', emailErr.message);
+      }
     }
 
     res.status(200).json({ message: 'Message sent successfully!' });

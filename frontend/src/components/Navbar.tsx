@@ -67,18 +67,40 @@ const Navbar: React.FC = () => {
   style={{
     display: 'flex',
     alignItems: 'center',
+    gap: '0.6rem',
   }}
 >
-  <img
-   src="/coding.png"
-    alt="Logo"
+  <div
     style={{
-      width: 45,
-      height: 45,
-      objectFit: 'cover',
+      width: 42,
+      height: 42,
       borderRadius: 8,
+      background: 'var(--primary)',
+      color: '#ffffff',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontFamily: 'var(--font-display)',
+      fontWeight: 700,
+      fontSize: '1.1rem',
+      flexShrink: 0,
     }}
-  />
+  >
+    RA
+  </div>
+
+  <span
+    className="navbar-name"
+    style={{
+      fontFamily: 'var(--font-display)',
+      fontWeight: 700,
+      color: '#111827',
+      fontSize: '1.15rem',
+      letterSpacing: '-0.01em',
+    }}
+  >
+    Rija<span style={{ color: 'var(--primary)' }}> Arshad</span>
+  </span>
 </Link>
       {/* Desktop Navigation */}
       <div
@@ -242,6 +264,12 @@ const Navbar: React.FC = () => {
 
           .mobile-menu-btn {
             display: block !important;
+          }
+        }
+
+        @media (max-width: 420px) {
+          .navbar-name {
+            display: none;
           }
         }
       `}</style>
