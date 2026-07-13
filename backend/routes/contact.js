@@ -3,22 +3,19 @@ const router = express.Router();
 const nodemailer = require('nodemailer');
 const Contact = require('../models/Contact');
 
-// Email transporter setup (Gmail)
 const createTransporter = () => nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS, // Use Gmail App Password (not regular password)
+    pass: process.env.EMAIL_PASS,
   },
-  connectionTimeout: 8000, // fail fast instead of hanging for a minute
+  connectionTimeout: 8000,
 });
 
-// POST — Submit contact form
 router.post('/', async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
 
-    // Basic validation
     if (!name || !email || !message) {
       return res.status(400).json({ message: 'Name, email, and message are required.' });
     }
@@ -26,14 +23,9 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ message: 'Please provide a valid email address.' });
     }
 
-    // Save to DB — this is the source of truth. Even if email fails below,
-    // the message is safely stored and you can see it via GET /api/contact
     const contact = new Contact({ name, email, subject, message });
     await contact.save();
 
-    // Send email notification — best effort. If this fails (bad Gmail
-    // credentials, Railway blocking SMTP, etc.) we still tell the user
-    // their message was received, since it's already saved in the database.
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
       try {
         const transporter = createTransporter();
@@ -59,7 +51,6 @@ router.post('/', async (req, res) => {
           `,
         });
 
-        // Auto-reply to sender
         await transporter.sendMail({
           from: `"Rija Arshad" <${process.env.EMAIL_USER}>`,
           to: email,
@@ -78,8 +69,6 @@ router.post('/', async (req, res) => {
           `,
         });
       } catch (emailErr) {
-        // Don't fail the whole request over email — the message is already
-        // safely in the database. Just log it so you know email needs a look.
         console.error('Email send failed (message was still saved to DB):', emailErr.message);
       }
     }
@@ -91,7 +80,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET — Retrieve all messages (protect this in production with auth!)
 router.get('/', async (req, res) => {
   try {
     const messages = await Contact.find().sort({ createdAt: -1 });
