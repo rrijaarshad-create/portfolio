@@ -10,6 +10,7 @@ const createTransporter = () => nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS, // Use Gmail App Password (not regular password)
   },
+  connectionTimeout: 8000, // fail fast instead of hanging for a minute
 });
 
 // POST — Submit contact form
@@ -31,8 +32,8 @@ router.post('/', async (req, res) => {
     await contact.save();
 
     // Send email notification — best effort. If this fails (bad Gmail
-    // credentials, etc.) we still tell the user their message was received,
-    // since it's already saved in the database.
+    // credentials, Railway blocking SMTP, etc.) we still tell the user
+    // their message was received, since it's already saved in the database.
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
       try {
         const transporter = createTransporter();
