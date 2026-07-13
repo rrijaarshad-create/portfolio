@@ -62,45 +62,39 @@ const Navbar: React.FC = () => {
       }}
     >
       {/* Logo */}
+{/* Minimal Wordmark Logo */}
+{/* Minimal Rija Wordmark */}
 <Link
   to="/"
   style={{
     display: 'flex',
     alignItems: 'center',
-    gap: '0.6rem',
+    textDecoration: 'none',
   }}
 >
-  <div
+  <motion.span
+    whileHover={{ scale: 1.03 }}
+    transition={{ duration: 0.2 }}
     style={{
-      width: 42,
-      height: 42,
-      borderRadius: 8,
-      background: 'var(--primary)',
-      color: '#ffffff',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontFamily: 'var(--font-display)',
-      fontWeight: 700,
-      fontSize: '1.1rem',
-      flexShrink: 0,
-    }}
+  fontFamily: '"Inter", sans-serif',
+  fontWeight: 700,
+  fontSize: '2rem',
+  letterSpacing: '-0.055em',
+  color: '#111111',
+  lineHeight: 1,
+}}
   >
-    RA
-  </div>
-
-  <span
-    className="navbar-name"
-    style={{
-      fontFamily: 'var(--font-display)',
-      fontWeight: 700,
-      color: '#111827',
-      fontSize: '1.15rem',
-      letterSpacing: '-0.01em',
-    }}
-  >
-    Rija<span style={{ color: 'var(--primary)' }}> Arshad</span>
-  </span>
+    rija
+    <span
+      style={{
+        color: 'var(--primary)',
+        fontSize: '2rem',
+        marginLeft: '1px',
+      }}
+    >
+      .
+    </span>
+  </motion.span>
 </Link>
       {/* Desktop Navigation */}
       <div
