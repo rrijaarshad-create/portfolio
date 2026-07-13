@@ -70,25 +70,26 @@ const Navbar: React.FC = () => {
     display: 'flex',
     alignItems: 'center',
     textDecoration: 'none',
+    marginLeft: '2.5rem',
   }}
 >
   <motion.span
     whileHover={{ scale: 1.03 }}
     transition={{ duration: 0.2 }}
     style={{
-  fontFamily: '"Inter", sans-serif',
-  fontWeight: 700,
-  fontSize: '2rem',
-  letterSpacing: '-0.055em',
-  color: '#111111',
-  lineHeight: 1,
-}}
+      fontFamily: '"Inter", sans-serif',
+      fontWeight: 700,
+      fontSize: '2.5rem',
+      letterSpacing: '-0.06em',
+      color: '#111111',
+      lineHeight: 1,
+    }}
   >
     rija
     <span
       style={{
         color: 'var(--primary)',
-        fontSize: '2rem',
+        fontSize: '2.5rem',
         marginLeft: '1px',
       }}
     >
