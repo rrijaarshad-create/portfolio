@@ -16,10 +16,23 @@ const app = express();
 app.use(helmet());
 
 app.use(cors({
-  origin: [
-    process.env.CLIENT_URL || 'http://localhost:3000',
-    'http://localhost:3000',
-  ],
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+
+    const allowed = [
+      'http://localhost:3000',
+      process.env.CLIENT_URL,
+    ].filter(Boolean);
+
+    // Accept any preview URL from this Vercel project automatically,
+    // instead of chasing the random string that changes every deploy.
+    const isVercelPreview = /^https:\/\/portfolio1[a-z0-9-]*\.vercel\.app$/.test(origin);
+
+    if (allowed.includes(origin) || isVercelPreview) {
+      return callback(null, true);
+    }
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
 }));
 app.set('trust proxy', 1); // trust first proxy
